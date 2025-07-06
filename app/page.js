@@ -459,7 +459,9 @@ export default function Home() {
         >
           {isCopying ? 'Copying⏳...' : 'Copy HTML'}
         </button>
-          <div onClick={handleReload} className="bg-[url(/reload.svg)] w-12 h-12 font-extrabold text-4xl flex items-center justify-center rounded-full cursor-pointer bg-amber-600 hover:bg-amber-500 bg-center bg-no-repeat"></div>
+          <div onClick={handleReload} className="w-12 h-12 font-extrabold text-4xl flex items-center justify-center rounded-full cursor-pointer bg-amber-600 hover:bg-amber-500 bg-center bg-no-repeat">
+            <span className="text-white">↻</span>
+          </div>
       </div>
 
       <div className="imagesHandle w-full my-7">

@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function DiscPage() {
   const [inputValue, setInputValue] = useState('');
 
   const saveToLocalStorage = () => {
     localStorage.setItem('discText', inputValue);
-    alert('Saved!');
+    toast.success('Disclaimer saved successfully!');
   };
 
   return (
