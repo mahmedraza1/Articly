@@ -13,10 +13,18 @@ export default function Home() {
   const contentEditableRef = useRef(null);
   const outputEditableRef = useRef(null);
   const [selected, setSelected] = useState("Add Disclaimer");
+  const [discText, setDiscText] = useState("");
 
   useEffect(() => {
     const savedClient = localStorage.getItem('lastClient');
     if (savedClient) setClientName(savedClient);
+  }, []);
+
+  useEffect(() => {
+    const text = localStorage.getItem('discText');
+    if (text) {
+      setDiscText(text);
+    }
   }, []);
 
   const handlePaste = (e) => {
@@ -111,8 +119,7 @@ export default function Home() {
       if (selected === "Add Disclaimer") {
         processedHTML += ` 
           <hr />
-          <p style="text-align: center;"><em>This article is sponsored content. All information is provided by the sponsor and Brave New Coin (BNC) does not endorse or assume responsibility for the content presented, which is not part of BNC’s editorial. Investing in crypto assets involves significant risk, including the potential loss of principal, and readers are strongly encouraged to conduct their own due diligence before engaging with any company or product mentioned. Brave New Coin disclaims any liability for any damages or losses arising from reliance on the content provided in this article.
-          </em></p>
+          <p style="text-align: center;"><em>${discText}</em></p>
         `;
       }
 
