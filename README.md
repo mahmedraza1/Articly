@@ -1,9 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Articly - Content Processing & Image Compression Tool
+
+A powerful Next.js application designed for content creators and digital marketers to process articles, compress images, and manage disclaimers efficiently.
+
+## Features
+
+### 🖼️ Image Processing
+- **Smart Image Compression**: Automatically compresses images to optimal size (825px width)
+- **Format Optimization**: Intelligently chooses between PNG and JPG based on transparency
+- **Batch Processing**: Handle multiple images simultaneously
+- **Visual Preview**: Grid view of processed images with download capability
+
+### 📝 Content Management
+- **Rich Text Editor**: Paste and edit content with embedded images
+- **Client Name Formatting**: Automatic name capitalization and formatting
+- **Link Processing**: Automatic `rel="nofollow"` and `target="_blank"` for external links
+- **HTML Export**: Copy processed HTML content for publishing
+
+### ⚙️ Disclaimer Management
+- **Custom Disclaimers**: Create and save custom disclaimer text
+- **Local Storage**: Persistent storage of disclaimer settings
+- **Toggle Feature**: Easy on/off toggle for disclaimer inclusion
+
+## Tech Stack
+
+- **Frontend**: Next.js 15.3.1 with React 19
+- **Styling**: Tailwind CSS 4.1.11
+- **Image Processing**: Browser-native canvas API with custom compression algorithms
+- **State Management**: React hooks with localStorage persistence
+- **UI Components**: Custom components with react-hot-toast for notifications
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+ 
+- npm, yarn, pnpm, or bun
 
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd Articly
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Run the development server:
 ```bash
 npm run dev
 # or
@@ -14,23 +63,77 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Main Content Processing
+1. Enter the client name in the input field
+2. Paste your content (text + images) in the left editor
+3. Choose whether to include disclaimer
+4. Click "Process Content" to generate optimized output
+5. Use "Copy HTML" to export the processed content
 
-## Learn More
+### Image Compression
+- Images are automatically detected and compressed when pasted
+- Processed images appear in a grid with download buttons
+- Original dimensions and file sizes are preserved in metadata
 
-To learn more about Next.js, take a look at the following resources:
+### Disclaimer Management
+- Navigate to `/disc` to manage disclaimer settings
+- Enter custom disclaimer text in the textarea
+- Click "Save Disclaimer" to store for future use
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+Articly/
+├── app/
+│   ├── page.js          # Main content processing interface
+│   ├── disc/
+│   │   └── page.js      # Disclaimer management page
+│   ├── layout.js        # Root layout component
+│   └── globals.css      # Global styles
+├── utils/
+│   └── compressImage.js # Image compression utilities
+├── public/              # Static assets
+└── package.json
+```
 
-## Deploy on Vercel
+## Key Dependencies
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `browser-image-compression`: Advanced image compression
+- `js-beautify`: HTML formatting and beautification
+- `react-hot-toast`: User notifications
+- `sanitize-html`: HTML sanitization for security
+- `react-dropzone`: File upload handling
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Development
+
+### Available Scripts
+
+- `npm run dev`: Start development server with Turbopack
+- `npm run build`: Build for production
+- `npm run start`: Start production server
+- `npm run lint`: Run ESLint
+
+### Environment
+- Uses Next.js App Router
+- Tailwind CSS for styling
+- Client-side rendering for interactive features
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is private and proprietary.
+
+---
+
+**Note**: This application is optimized for content creators who need efficient image processing and content management workflows.
