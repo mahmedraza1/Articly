@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Content Processor - Mark",
-  description: "Developed by Mark(Muhammad Ahmed Raza)."
+  title: "Articly - Convert Google Docs to HTML",
+  description: "Convert Google Docs articles into clean HTML and downloadable images in one click. Built with Next.js. Developed by Mark(Muhammad Ahmed Raza).",
 };
 
 export default function RootLayout({ children }) {

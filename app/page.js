@@ -424,16 +424,16 @@ export default function Home() {
           placeholder="Enter Client Name"
           value={clientName}
           onChange={(e) => setClientName(e.target.value)}
-          className="p-2 w-96 border border-gray-400 rounded text-black"
+          className="p-2 w-96 border border-gray-400 rounded-full px-3 text-black"
           required
         />
-        <div className="border rounded-lg">
-          <label className={`flex items-center ${selected === "Add Disclaimer" ? "bg-blue-600" : "bg-red-600"} px-3 w-40 py-2 select-none rounded-lg cursor-pointer text-white font-bold`}>
+        <div>
+          <label className={`flex items-center ${selected === "Add Disclaimer" ? "bg-blue-600" : "bg-red-600"} px-2 w-44 py-4 select-none rounded-full cursor-pointer text-white font-bold`}>
             <input
               type="checkbox"
               checked={selected === "Add Disclaimer"}
               onChange={() => setSelected(selected === "No Disclaimer" ? "Add Disclaimer" : "No Disclaimer")}
-              className="mr-2"
+              className="mr-2 accent-white"
             />
             {selected}
           </label>
@@ -441,18 +441,18 @@ export default function Home() {
         <button
           onClick={processContent}
           disabled={isProcessing}
-          className="px-3 py-2 bg-blue-600 font-bold text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-500"
+          className="px-3 cursor-pointer bg-blue-600 font-bold text-white hover:bg-blue-700 disabled:bg-gray-500 py-4 rounded-full"
         >
           {isProcessing ? 'Processing...' : 'Process Content'}
         </button>
         {/* Add Copy HTML Button */}
         <button
           onClick={handleCopyHTML}
-          className="px-3 py-2 bg-blue-600 font-bold text-white rounded-lg hover:bg-blue-700"
+          className="px-3 py-4 bg-blue-600 cursor-pointer font-bold text-white hover:bg-blue-700 rounded-full"
         >
           {isCopying ? 'Copying⏳...' : 'Copy HTML'}
         </button>
-          <div onClick={handleReload} className="w-12 h-12 font-extrabold text-4xl flex items-center justify-center rounded-full cursor-pointer bg-orange-600">&#8593;</div>
+          <div onClick={handleReload} className="w-12 h-12 font-extrabold text-4xl flex items-center justify-center rounded-full cursor-pointer bg-amber-600 hover:bg-amber-500">&#8593;</div>
       </div>
 
       <div className="imagesHandle w-full my-7">
@@ -472,7 +472,7 @@ export default function Home() {
                   </p>
                   <button
                     onClick={() => downloadImage(image)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded font-bold hover:bg-blue-700"
+                    className="px-4 py-2 bg-blue-600 cursor-pointer text-white rounded font-bold hover:bg-blue-700"
                   >
                     Download
                   </button>
@@ -505,8 +505,6 @@ export default function Home() {
         </div>
       </div>
           {/* Mark */}
-
-
 
     </main>
   );
