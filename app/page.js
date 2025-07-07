@@ -14,6 +14,7 @@ export default function Home() {
   const outputEditableRef = useRef(null);
   const [selected, setSelected] = useState("Add Disclaimer");
   const [discText, setDiscText] = useState("");
+  const [originalHTML, setOriginalHTML] = useState("");
 
   useEffect(() => {
     const savedClient = localStorage.getItem('lastClient');
@@ -29,6 +30,14 @@ export default function Home() {
 
   const handlePaste = (e) => {
     const items = e.clipboardData.items;
+    
+    // Capture original HTML from clipboard
+    const htmlData = e.clipboardData.getData('text/html');
+    if (htmlData) {
+      setOriginalHTML(htmlData);
+      // console.log("Original Article HTML:", htmlData);
+    }
+    
     for (const item of items) {
       if (item.type.startsWith('image/')) {
         e.preventDefault();
@@ -40,6 +49,13 @@ export default function Home() {
           const img = document.createElement('img');
           img.src = reader.result;
           range.insertNode(img);
+          
+          // Update original HTML after image insertion
+          setTimeout(() => {
+            const updatedHTML = contentEditableRef.current.innerHTML;
+            setOriginalHTML(updatedHTML);
+            // console.log("Original Article HTML (with images):", updatedHTML);
+          }, 100);
         };
         reader.readAsDataURL(blob);
       }
@@ -150,10 +166,30 @@ export default function Home() {
           }
 
           const imageNumber = lastIndex + index + 1;
-          return await resizeAndCompressImage(
+          const processedImage = await resizeAndCompressImage(
             blob,
             `${cleanClientName} ${month} ${day}-${imageNumber}`
           );
+
+          // Check if image is wrapped in an anchor tag by looking at the original HTML
+          let imageLink = null;
+          if (originalHTML) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = originalHTML;
+            const anchors = tempDiv.querySelectorAll('a');
+            
+            anchors.forEach(anchor => {
+              const imgInAnchor = anchor.querySelector('img');
+              if (imgInAnchor && imgInAnchor.src === img.src) {
+                imageLink = anchor.href;
+              }
+            });
+          }
+
+          return {
+            ...processedImage,
+            originalLink: imageLink
+          };
         } catch (error) {
           console.error(`Image ${index + 1} failed:`, error);
           return null;
@@ -202,6 +238,28 @@ export default function Home() {
         console.error("Download failed:", error);
         toast.error(`Download failed: ${error.message}`);
       }
+    }
+  };
+
+  const copyLink = async (link) => {
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(link);
+        toast.success("Link Copied to Clipboard");
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = link;
+        textArea.style.position = 'absolute';
+        textArea.style.opacity = 0;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        toast.success("Link Copied to Clipboard");
+      }
+    } catch (error) {
+      console.error("Copy failed:", error);
+      toast.error("Failed to copy link");
     }
   };
 
@@ -299,7 +357,7 @@ export default function Home() {
           p.remove();
         }
       });
-      console.log(doc)
+      // console.log(doc)
 
       // Remove all instances of non-breaking spaces (&nbsp;)
       const allElements = doc.querySelectorAll('*');
@@ -469,7 +527,13 @@ export default function Home() {
           <div className="w-full">
             <div className="grid grid-cols-6 gap-4">
               {processedImages.map((image, index) => (
-                <div key={index} className="text-center bg-[#d3d3d3] p-2 rounded-lg">
+                <div key={index} className="text-center bg-[#d3d3d3] p-2 rounded-lg relative">
+                  {/* Link indicator */}
+                  {image.originalLink && (
+                    <div className="absolute top-2 right-2 bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                      🔗
+                    </div>
+                  )}
                   <img
                     src={image.url}
                     alt="Processed"
@@ -479,12 +543,23 @@ export default function Home() {
                   <p className="text-xs text-gray-600 mb-2">
                     {Math.round(image.size / 1024)}KB - {image.dimensions.width}x{image.dimensions.height}
                   </p>
-                  <button
-                    onClick={() => downloadImage(image)}
-                    className="px-4 py-2 bg-blue-600 cursor-pointer text-white rounded font-bold hover:bg-blue-700"
-                  >
-                    Download
-                  </button>
+                  <div className="flex gap-2 justify-center">
+                    <button
+                      onClick={() => downloadImage(image)}
+                      className="px-3 py-2 bg-blue-600 cursor-pointer text-white rounded font-bold hover:bg-blue-700 text-sm"
+                    >
+                      Download
+                    </button>
+                    {image.originalLink && (
+                      <button
+                        onClick={() => copyLink(image.originalLink)}
+                        className="px-3 py-2 bg-green-600 cursor-pointer text-white rounded font-bold hover:bg-green-700 text-sm"
+                        title="Copy original link"
+                      >
+                        Copy Link
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
