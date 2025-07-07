@@ -515,13 +515,11 @@ export default function Home() {
           onClick={handleCopyHTML}
           className="px-3 py-4 bg-blue-600 cursor-pointer font-bold text-white hover:bg-blue-700 rounded-full"
         >
-          {isCopying ? 'Copying⏳...' : 'Copy HTML'}
+          {isCopying ? 'Copied' : 'Copy HTML'}
         </button>
-          <div onClick={handleReload} className="w-12 h-12 font-extrabold text-4xl flex items-center justify-center rounded-full cursor-pointer bg-amber-600 hover:bg-amber-500 bg-center bg-no-repeat">
-            <span className="text-white">↻</span>
-          </div>
+          <div onClick={handleReload} className="w-12 h-12 font-extrabold text-4xl flex items-center justify-center rounded-full cursor-pointer bg-orange-500 hover:bg-orange-400 bg-center bg-no-repeat">&uarr;</div>
       </div>
-
+&uarr;	
       <div className="imagesHandle w-full my-7">
         {processedImages.length > 0 && (
           <div className="w-full">
