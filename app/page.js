@@ -269,9 +269,6 @@ export default function Home() {
   // Handle "Copy HTML" action
   const handleCopyHTML = () => {
     try {
-
-      setIsCopying(true)
-
       let htmlContent = processedContent;
       const parser = new DOMParser();
       const doc = parser.parseFromString(htmlContent, 'text/html');
@@ -450,10 +447,11 @@ export default function Home() {
       // Copy to clipboard
       if (navigator.clipboard) {
         navigator.clipboard.writeText(beautifiedHTML).then(() => {
+          setIsCopying(true);
           setTimeout(() => {
             setIsCopying(false); // Reset button text after 2 seconds
-            toast.success("HMTL Copied to Clipboard")
-          }, 50);
+            toast.success("HTML Copied to Clipboard")
+          }, 150);
         }).catch((error) => {
           console.error('Failed to copy:', error);
           toast.error('Failed to copy formatted HTML content.');
@@ -467,7 +465,11 @@ export default function Home() {
         textArea.select();
         document.execCommand('copy');
         document.body.removeChild(textArea);
-        toast.success('Formatted HTML content copied to clipboard!');
+        setIsCopying(true);
+        setTimeout(() => {
+          setIsCopying(false);
+          toast.success('HTML Copied to Clipboard');
+        }, 150);
       }
     } catch (error) {
       console.error('Error copying formatted HTML:', error);
@@ -506,20 +508,20 @@ export default function Home() {
         <button
           onClick={processContent}
           disabled={isProcessing}
-          className="px-3 cursor-pointer bg-blue-600 font-bold text-white hover:bg-blue-700 disabled:bg-gray-500 py-4 rounded-full"
+          className="px-3 cursor-pointer bg-blue-600 font-bold text-white hover:bg-blue-700 disabled:bg-gray-500 disabled:cursor-not-allowed py-4 rounded-full"
         >
           {isProcessing ? 'Processing...' : 'Process Content'}
         </button>
         {/* Add Copy HTML Button */}
         <button
           onClick={handleCopyHTML}
-          className="px-3 py-4 bg-blue-600 cursor-pointer font-bold text-white hover:bg-blue-700 rounded-full"
+          disabled={isCopying || !processedContent}
+          className="px-3 py-4 bg-blue-600 cursor-pointer font-bold disabled:bg-gray-500 disabled:cursor-not-allowed text-white hover:bg-blue-700 rounded-full"
         >
-          {isCopying ? 'Copying⏳...' : 'Copy HTML'}
+          {isCopying ? 'Copied' : 'Copy HTML'}
         </button>
           <div onClick={handleReload} className="w-12 h-12 font-extrabold text-4xl flex items-center justify-center rounded-full cursor-pointer bg-orange-500 hover:bg-orange-400 bg-center bg-no-repeat">&uarr;</div>
       </div>
-&uarr;	
       <div className="imagesHandle w-full my-7">
         {processedImages.length > 0 && (
           <div className="w-full">
