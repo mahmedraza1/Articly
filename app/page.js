@@ -515,7 +515,7 @@ export default function Home() {
           onClick={handleCopyHTML}
           className="px-3 py-4 bg-blue-600 cursor-pointer font-bold text-white hover:bg-blue-700 rounded-full"
         >
-          {isCopying ? 'Copied' : 'Copy HTML'}
+          {isCopying ? 'Copying⏳...' : 'Copy HTML'}
         </button>
           <div onClick={handleReload} className="w-12 h-12 font-extrabold text-4xl flex items-center justify-center rounded-full cursor-pointer bg-orange-500 hover:bg-orange-400 bg-center bg-no-repeat">&uarr;</div>
       </div>
