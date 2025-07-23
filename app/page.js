@@ -212,32 +212,16 @@ export default function Home() {
 
   const downloadImage = async (image) => {
     try {
-      if (window.showSaveFilePicker) {
-        const handle = await window.showSaveFilePicker({
-          suggestedName: `${image.name}.${image.format}`,
-          types: [{
-            description: 'Image Files',
-            accept: { [`image/${image.format}`]: [`.${image.format}`] }
-          }]
-        }
-      );
-        const writable = await handle.createWritable();
-        await writable.write(await fetch(image.url).then(r => r.blob()));
-        await writable.close();
-      } else {
-        const link = document.createElement('a');
-        link.href = image.url;
-        link.download = `${image.name}.${image.format}`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
+      const link = document.createElement('a');
+      link.href = image.url;
+      link.download = `${image.name}.${image.format}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       toast.success("Image Downloaded")
     } catch (error) {
-      if (error.name !== 'AbortError') {
-        console.error("Download failed:", error);
-        toast.error(`Download failed: ${error.message}`);
-      }
+      console.error("Download failed:", error);
+      toast.error(`Download failed: ${error.message}`);
     }
   };
 
